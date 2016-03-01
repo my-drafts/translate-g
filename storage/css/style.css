@@ -1,0 +1,54 @@
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: Verdana, Tahoma, monospace;
+}
+form#translate-test {
+  border: 1px solid red;
+  margin: 0px auto;
+  padding: 8px 0px;
+  text-align: center;
+  width: 400px;
+}
+form#translate-test hr {
+  margin: 8px auto;
+}
+form#translate-test input,
+form#translate-test select {
+  background-color: transparent;
+  border: 1px dotted #999;
+  border-radius: 4px;
+}
+form#translate-test input[type=text],
+form#translate-test input[type=password],
+form#translate-test select {
+  outline: none;
+}
+form#translate-test input[type=text],
+form#translate-test select {
+  border-bottom-color: #EEE;
+  border-right-color: #EEE;
+}
+form#translate-test input[type=button],
+form#translate-test input[type=reset],
+form#translate-test input[type=submit] {
+  border-top-color: #EEE;
+  border-left-color: #EEE;
+}
+form#translate-test input[type=text] {
+  margin: 4px 0 0;
+  width: 64px;
+}
+form#translate-test input[type=text][name=uri] {
+  width: 256px;
+}
+form#translate-test input[type=submit],
+form#translate-test input[type=reset] {
+  margin: 0 8px;
+  width: 64px;
+}
+form#translate-test select {
+  margin: 0px 8px;
+  width: 64px;
+}

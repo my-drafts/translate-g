@@ -1,0 +1,51 @@
+
+html, body{
+	margin: 0px;
+	padding: 0px;
+	font-family: Verdana, Tahoma, monospace;
+}
+
+form#translate-test{
+	border: 1px solid red;
+	margin: 0px auto;
+	padding: 8px 0px;
+	text-align: center;
+	width: 400px;
+
+	hr{
+		margin: 8px auto;
+	}
+
+	input, select{
+		background-color: transparent;
+		border: 1px dotted #999;
+		border-radius: 4px;
+	}
+	input[type=text], input[type=password], select{
+		outline: none;
+	}
+	input[type=text], select{
+		border-bottom-color: #EEE;
+		border-right-color: #EEE;
+	}
+	input[type=button], input[type=reset], input[type=submit]{
+		border-top-color: #EEE;
+		border-left-color: #EEE;
+	}
+
+	input[type=text]{
+		margin: 4px 0 0;
+		width: 64px;
+	}
+	input[type=text][name=uri]{
+		width: 256px;
+	}
+	input[type=submit], input[type=reset]{
+		margin: 0 8px;
+		width: 64px;
+	}
+	select{
+		margin: 0px 8px;
+		width: 64px;
+	}
+}

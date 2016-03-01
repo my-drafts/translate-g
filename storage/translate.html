@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<title>translate</title>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
 </head>
 
-<style type="text/css">
-</style>
-
 <body>
-	{{body|safe}}
+{%- if items %}
+	{% for item in items -%}
+		<div id="div-{{ loop.key }}">{{ item|safe }}</div>
+	{%- endfor -%}
+{%- else %}
+	<div id="no-div">.</div>
+{%- endif %}
 </body>
+
 </html>
