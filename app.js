@@ -208,23 +208,27 @@ var timeTic = function(){
 var Tic = function(){
 	var p = 'http://t.zanner.org.ua/d/';
 	Translate.findOne({out: null}, function(error, r){
-		translating(Object.assign({sl:r.sl, tl:r.tl, uri:p+r._id}, r.proxy?{proxy:r.proxy}:{}))
-			.then(function(result){
-				fix(result, true);
-				var out = {};
-				result.$('html > body > div[id^="div-"]').each(function(index, element){
-					var $ = result.$, key = $(element).attr('id').replace(/^div-/i, ''), value = $(element).html();
-					out[key] = value;
-				});
-				r.out = Object.assign(out);
-				r.save(function(error){
-					send(Object.assign({}, {out:out}, r.addition), r.uri, function(error, resData, resHeaders, resCode){
-						setTimeout(Tic, timeTic());
+		if(error) setTimeout(Tic, timeTic());
+		else if(r){
+			translating(Object.assign({sl:r.sl, tl:r.tl, uri:p+r._id}, r.proxy?{proxy:r.proxy}:{}))
+				.then(function(result){
+					fix(result, true);
+					var out = {};
+					result.$('html > body > div[id^="div-"]').each(function(index, element){
+						var $ = result.$, key = $(element).attr('id').replace(/^div-/i, ''), value = $(element).html();
+						out[key] = value;
 					});
+					r.out = Object.assign(out);
+					r.save(function(error){
+						send(Object.assign({}, {out:out}, r.addition), r.uri, function(error, resData, resHeaders, resCode){
+							setTimeout(Tic, timeTic());
+						});
+					});
+				}, function(error){
+					setTimeout(Tic, timeTic());
 				});
-			}, function(error){
-				setTimeout(Tic, timeTic());
-			});
+		}
+		else setTimeout(Tic, timeTic());
 	});
 };
 Tic();
