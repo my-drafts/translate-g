@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
+    "fork": "node ../translate-g/app.js &",
+    "start": "node ../translate-g/app.js",
+    "state": "ps -ax | grep -e 'node' | grep -e 'translate-g' | awk '{print $1}'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sergey Kukharev",
