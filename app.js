@@ -66,7 +66,7 @@ var send = function(postData, uri, cb){
 var encoding = require('encoding');
 var mach = require('mach');
 var app = mach.stack();
-app.use(mach.logger);
+//app.use(mach.logger);
 app.use(mach.modified);
 app.use(mach.params);
 
