@@ -45,8 +45,8 @@ app.get('/d/:id', function(conn){
 		var id = conn.params.id || 0;
 		Translate.findById(id, function(error, translate){
 			tpl.renderFile('translate.html', {
-				lang: error ? 'en' : translate.sl,
-				items: error ? false : translate.data
+				lang: !error && translate && translate.sl ? translate.sl : 'en',
+				items: !error && translate && translate.data ? translate.data : false
 			}, function(error, out){
 				if(error) reject(error)
 				else resolve(out);
