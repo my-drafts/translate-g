@@ -9,7 +9,8 @@ var TranslateSchema = new mongoose.Schema({
 	uri: { type: String },
 	data: { type: mongoose.Schema.Types.Mixed, default: {} },
 	addition: { type: mongoose.Schema.Types.Mixed, default: {} },
-	out: { type: mongoose.Schema.Types.Mixed, default: null }
+	out: { type: mongoose.Schema.Types.Mixed, default: null },
+	outResponse: { type: mongoose.Schema.Types.Mixed, default: null }
 });
 mongoose.connect('mongodb://localhost/translate');
 var Translate  = mongoose.model('translate', TranslateSchema);

@@ -1,3 +1,4 @@
+var util = require('util');
 var of = require('zanner-typeof').of;
 var pt = require('zanner-ptg');
 var fix = pt.fix, translating = pt.translate;
@@ -112,9 +113,19 @@ app.get('/t/:id', function(conn){
 	return new Promise(function(resolve, reject){
 		var id = conn.params.id || 0;
 		Translate.findById(id, function(error, translate){
-			resolve(JSON.stringify(error ? {error:error} : translate));
+			resolve(JSON.stringify(error ? {error:error} : translate, null, '  '));
 		});
 	});
+});
+
+app.get('/t', function(conn){
+	return Translate.find({}, {_id:1}).stream({ transform: function(record){
+		return util.format('<a href="/t/%s">%s</a><br />', record._id, record._id);
+	} });
+});
+
+app.get('/tt', function(conn){
+	return Translate.find({}).stream({ transform: function(record){return JSON.stringify(record, null, '  ')+'\n';} });
 });
 
 app.get('/*', function(conn){

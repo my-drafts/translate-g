@@ -42,7 +42,7 @@ var send = function(postData, uri, cb){
 };
 
 var timeTic = function(){
-	return 1000*15;
+	return 1000*120;
 };
 
 var Tic = function(){
@@ -55,17 +55,23 @@ var Tic = function(){
 					fix(result, true);
 					var out = {};
 					result.$('html > body > div[id^="div-"]').each(function(index, element){
-						var $ = result.$, key = $(element).attr('id').replace(/^div-/i, ''), value = $(element).html();
+						var $ = result.$, key = $(element).attr('id').replace(/^div-/i, ''), value = $(element).html().trim();
 						out[key] = value;
 					});
 					r.out = Object.assign(out);
 					r.save(function(error){
 						send(Object.assign({}, {out:out}, r.addition), r.uri, function(error, resData, resHeaders, resCode){
-							setTimeout(Tic, timeTic());
+							r.outResponse = error ? { error:error } : { code:resCode, headers:resHeaders, data:resData };
+							r.save(function(error){
+								setTimeout(Tic, timeTic());
+							});
 						});
 					});
 				}, function(error){
-					setTimeout(Tic, timeTic());
+					r.out = { error:error };
+					r.save(function(error){
+						setTimeout(Tic, timeTic());
+					});
 				});
 		}
 		else setTimeout(Tic, timeTic());
