@@ -59,10 +59,10 @@ var Tic = function(){
 						out[key] = value;
 					});
 					r.out = Object.assign(out);
-					r.save(function(error){
+					r.save(function(error, r){
 						send(Object.assign({}, {out:out}, r.addition), r.uri, function(error, resData, resHeaders, resCode){
 							r.outResponse = error ? { error:error } : { code:resCode, headers:resHeaders, data:resData };
-							r.save(function(error){
+							r.save(function(error, r){
 								setTimeout(Tic, timeTic());
 							});
 						});
