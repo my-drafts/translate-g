@@ -12,7 +12,7 @@ var TranslateSchema = new mongoose.Schema({
 	out: { type: mongoose.Schema.Types.Mixed, default: null },
 	outResponse: { type: mongoose.Schema.Types.Mixed, default: {} }
 });
-mongoose.connect('mongodb://localhost/translate');
+mongoose.connect(require('./db-cfg'));
 var Translate  = mongoose.model('translate', TranslateSchema);
 
 module.exports.mongoose = mongoose;
