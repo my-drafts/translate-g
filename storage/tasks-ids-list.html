@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>tasks ids</title>
+	<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+</head>
+
+<body>
+{% for taskId in tasks %}
+	<a href="/task/{{taskId}}">{{taskId}}</a><br />
+{% endfor %}
+</body>
+
+</html>

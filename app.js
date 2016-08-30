@@ -3,9 +3,9 @@ var of = require('zanner-typeof').of;
 var pt = require('zanner-ptg');
 var fix = pt.fix, translating = pt.translate;
 
-var Translate = require('./db').Translate;
-var tpl = require('./tpl').tpl;
-var Tic = require('./tic').Tic;
+var db = require('./lib/db');
+var tpl = require('./lib/tpl');
+var Tic = require('./lib/tic').Tic;
 
 var encoding = require('encoding');
 var mach = require('mach');
@@ -24,84 +24,140 @@ app.get('/storage/*', function(conn){
 });
 
 /** /
-app.use(mach.file, {
+ app.use(mach.file, {
 	root: __dirname + '/storage/',
 	autoIndex: false,
 	useLastModified: true,
 	useETag: true
 });
-/**/
+ /**/
 
+// uri: "/"
+var tf1;
+tpl.compileFile('index.html').then(function(tf){
+	tf1 = tf;
+});
 app.get('/', function(conn){
-	return new Promise(function(resolve, reject){
-		tpl.renderFile('index.html', {}, function(error, out){
-			if(error) reject(error)
-			else resolve(out);
+	return tf1({});
+});
+
+
+// uri: "/tasks-ids-list"
+var tf2;
+tpl.compileFile('tasks-ids-list.html').then(function(tf){
+	tf2 = tf;
+});
+app.get('/tasks-ids-list', function(conn){
+	return db.find({}).then(function(cursor){
+		var tasks = cursor.map(function(record){
+			return String(record._id);
 		});
+		return tf2({tasks: tasks});
 	});
 });
 
-app.get('/d/:id', function(conn){
-	return new Promise(function(resolve, reject){
-		var id = conn.params.id || 0;
-		Translate.findById(id, function(error, translate){
-			tpl.renderFile('translate.html', {
-				lang: !error && translate && translate.sl ? translate.sl : 'en',
-				items: !error && translate && translate.data ? translate.data : false
-			}, function(error, out){
-				if(error) reject(error)
-				else resolve(out);
-			});
+// uri: "/tasks-list"
+var tf3;
+tpl.compileFile('tasks-list.html').then(function(tf){
+	tf3 = tf;
+});
+app.get('/tasks-list', function(conn){
+	return db.find({}).then(function(cursor){
+		var tasks = cursor.map(function(record){
+			return JSON.stringify(record, null, '  ');
 		});
+		return tf3({tasks: tasks});
 	});
 });
 
-app.get('/f', function(conn){
-	return new Promise(function(resolve, reject){
-		tpl.renderFile('form.html', {
-			bot: true
-		}, function(error, out){
-			if(error) reject(error)
-			else resolve(out);
+
+// uri: "/task-to-translate/:id"
+var tf4;
+tpl.compileFile('task-to-translate.html').then(function(tf){
+	tf4 = tf;
+});
+app.get('/task-to-translate/:id', function(conn){
+	var render = function(translate){
+		return tf4({lang: translate.sl || 'en', items: translate.data || false});
+		//return tpl.renderFile('translate.html', {lang: translate.sl, items: translate.data});
+	};
+	return db.findById(conn.params.id || 0)
+		.then(render)
+		.catch(function(){
+			return Promise.resolve(render({}));
 		});
-	});
 });
 
-app.get('/test', function(conn){
-	return 'test ' + JSON.stringify(conn.params);
+// uri: "/task/:id"
+var tf5;
+tpl.compileFile('task.html').then(function(tf){
+	tf5 = tf;
+});
+app.get('/task/:id', function(conn){
+	var render = function(translate){
+		return tf5({task: translate ? JSON.stringify(translate, null, '  ') : '.'});
+	};
+	return db.findById(conn.params.id || 0)
+		.then(render)
+		.catch(function(){
+			return Promise.resolve(render({}));
+		});
 });
 
-app.post('/test', function(conn){
-	return 'test ' + JSON.stringify(conn.params);
+
+// uri: "/task-send-form"
+var tf6;
+tpl.compileFile('task-send-form.html').then(function(tf){
+	tf6 = tf;
+});
+app.get('/task-send-form', function(conn){
+	return tf6({uri: 'http://zanner.org.ua/t/'});
 });
 
-app.post('/q', function(conn){
+app.post('/task-to-query', function(conn){
 	return new Promise(function(resolve, reject){
-		const KEYS = ['data', 'proxy', 'sl', 'tl', 'uri'];
-		var t = { addition: Object.assign({}, conn.params) };
-		for(var i=0; i<KEYS.length; i++){
-			var k = KEYS[i];
-			if(!(k in t.addition)) continue;
-			else if(k==='data'){
-				try{
-					if(of(t.addition[k], 'string')) t[k] = JSON.parse(decodeURI(t.addition[k]));
-				}
-				catch(error){}
-				if(of(t.addition[k], 'object')){
-					t[k] = Object.assign({}, t.addition[k]);
-					Object.keys(t[k]).forEach(function(v){
-						if(!of(t[k][v], 'string')) delete t[k][v];
-					});
-				}
-			}
-			else{
-				if(of(t.addition[k], 'string')) t[k] = t.addition[k];
-			}
-			delete t.addition[k];
+		var rest = conn.params;
+
+		// conn.params.data
+		var data = rest.data;
+		rest.data = undefined;
+		delete rest.data;
+		try{
+			data = decodeURI(data);
+			data = JSON.parse(data);
 		}
-		if(t.data && t.sl && t.tl && t.uri){
-			var t1 = new Translate(t);
-			t1.save(function(error, record){
+		catch(error){
+			data = undefined;
+		}
+
+		// conn.params.proxy
+		var proxy = rest.proxy;
+		rest.proxy = undefined;
+		delete rest.proxy;
+		if(!of(proxy, 'string')) proxy = undefined;
+
+		// conn.params.sl
+		var sl = rest.sl;
+		rest.sl = undefined;
+		delete rest.sl;
+		if(!of(sl, 'string')) sl = undefined;
+
+		// conn.params.tl
+		var tl = rest.tl;
+		rest.tl = undefined;
+		delete rest.tl;
+		if(!of(tl, 'string')) tl = undefined;
+
+		// conn.params.uri
+		var uri = rest.uri;
+		rest.uri = undefined;
+		delete rest.uri;
+		if(!of(uri, 'string')) uri = undefined;
+
+		if(data && sl && tl && uri){
+			var t = {data: data, sl: sl, tl: tl, uri: uri};
+			if(proxy) t.proxy = proxy;
+			db.save(t).then(function(record){
 				resolve(String(record._id));
 			});
 		}
@@ -109,31 +165,22 @@ app.post('/q', function(conn){
 	});
 });
 
-app.get('/t/:id', function(conn){
-	return new Promise(function(resolve, reject){
-		var id = conn.params.id || 0;
-		Translate.findById(id, function(error, translate){
-			resolve(JSON.stringify(error ? {error:error} : translate, null, '  '));
-		});
-	});
+
+app.get('/test', function(conn){
+	return 'test-get. '+JSON.stringify(conn.params);
 });
 
-app.get('/t', function(conn){
-	return Translate.find({}, {_id:1}).stream({ transform: function(record){
-		return util.format('<a href="/t/%s">%s</a><br />', record._id, record._id);
-	} });
+app.post('/test', function(conn){
+	return 'test-post. '+JSON.stringify(conn.params);
 });
 
-app.get('/tt', function(conn){
-	return Translate.find({}).stream({ transform: function(record){return JSON.stringify(record, null, '  ')+'\n';} });
-});
 
 app.get('/*', function(conn){
-	return 'unknown';
+	return 'used unknown GET uri';
 });
 
 app.post('/*', function(conn){
-	return 'unknown';
+	return 'use unknown POST uri';
 });
 
 mach.serve(app, {port: 8088});

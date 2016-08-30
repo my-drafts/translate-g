@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>translate</title>
+	<title>send form</title>
 	<link type="text/css" rel="stylesheet" href="/storage/css/style.css" />
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="/storage/js/script.js"></script>
@@ -11,7 +11,7 @@
 
 <body>
 	<section>
-		<form action="/q" method="post" enctype="multipart/form-data" id="translate-test">
+		<form action="/task-to-query" method="post" enctype="multipart/form-data" id="translate-test">
 			<input type="text" id="translate-test-add-key" placeholder="<name>" value="" />
 			<input type="text" id="translate-test-add-value" placeholder="<value>" value="" />
 			<input type="button" id="translate-test-add" value=" + " />
@@ -31,7 +31,7 @@
 				<option value="uk">uk</option>
 			</select>
 			<br />
-			<input type="text" name="uri" placeholder="http://t.zanner.org.ua/test" value="http://t.zanner.org.ua/test" />
+			<input type="text" name="uri" placeholder="< TRANSLATE-SEND-URI >" value="{{uri}}" />
 			<hr />
 			<input type="submit" value="send" />
 			<input type="reset" value="reset" />

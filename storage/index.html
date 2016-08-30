@@ -2,16 +2,21 @@
 <html>
 <head lang="en">
 	<meta charset="UTF-8">
-	<title>translate</title>
+	<title>translater</title>
 	<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 </head>
 
 <body>
-	<p><a href="/f">form data [GET]</a></p>
-	<p><a href="/d">queried element by id as html for bot [GET]</a></p>
-	<p><a href="/t">queried element by id as json [GET]</a></p>
-	<p><a href="/test">test params [GET/POST]</a></p>
-	<p><a href="/q">put data to query [POST]</a></p>
+	<p><a href="/tasks-ids-list">list of task-id [use GET request]</a></p>
+	<p><a href="/tasks-list">list of tasks as json [use GET request]</a></p>
+	<br />
+	<p><a href="/task-to-translate/:id">queried task-html to translate [use GET request]</a></p>
+	<p><a href="/task/:id">queried task-json to query</a></p>
+	<br />
+	<p><a href="/task-send-form">test form for puting task to query</a></p>
+	<p><a href="/task-to-query">uri for puting task to query [use POST request]</a></p>
+	<br />
+	<p><a href="/test">test params [use GET/POST request]</a></p>
 </body>
 
 </html>

@@ -1,29 +1,44 @@
 
 $(document).ready(function(){
 	$('#translate-test-add').bind('click', function(){
-		var key = $('#translate-test-add-key').val().trim(), value = $('#translate-test-add-value').val().trim(), o = {};
+		var key = $('#translate-test-add-key').val().trim();
+		var value = $('#translate-test-add-value').val().trim();
 		$('#translate-test-add-key').val('');
 		$('#translate-test-add-value').val('');
 		if(key && value && key.match(/^[\w\d\-\_]+$/ig)){
-			o[key] = value;
-			var html = '<div>' +
-				'<input type="hidden" value="'+encodeURI(JSON.stringify(o))+'" />' +
-				'<span>'+key+' : '+value+'</span>&nbsp;' +
-				'<input type="button" value=" - " onclick="$(this).parent().remove();">' +
-				'</div>';
-			$('div#translate-test-data').append(html);
+			var keyValue = {};
+			keyValue[key] = value;
+			keyValue = JSON.stringify(keyValue);
+			keyValue = encodeURI(keyValue);
+			var wrapperHidden = $('<input>').attr('type', 'hidden').val(keyValue);
+			var wrapperVisible = $('<span></span>').text(key+' : '+value);
+			var wrapperRemove = $('<input>').attr('type', 'button').css('margin-left', '12px').val(' - ').click(function(){
+				$(this).parent().remove();
+				return false;
+			});
+			var wrapper = $("<div></div>");
+			$(wrapper).append(wrapperHidden);
+			$(wrapper).append(wrapperVisible);
+			$(wrapper).append(wrapperRemove);
+			$('div#translate-test-data').append(wrapper);
 		}
 		return false;
 	});
 	$('form#translate-test').bind('submit', function(event){
 		//event.preventDefault();
 		var data = {};
-		$('div#translate-test-data input[type=hidden]').each(function(i, e){
-			Object.assign(data, JSON.parse(decodeURI($(e).val())));
+		$('div#translate-test-data input[type=hidden]').each(function(index, input){
+			var keyValue = $(input).val();
+			keyValue = decodeURI(keyValue);
+			keyValue = JSON.parse(keyValue);
+			Object.assign(data, keyValue);
 		});
-		$('form#translate-test').append('<input type="hidden" name="data" value="'+encodeURI(JSON.stringify(data))+'" />');
-		//alert('submit:' + $( this ).serialize());
-		//$('form#translate-test > input[type=hidden]').remove();
+		data = JSON.stringify(data);
+		data = encodeURI(data);
+		var sendData = $('<input>').attr('type', 'hidden').attr('name', 'data').val(data);
+		$('form#translate-test').append(sendData);
+		$('div#translate-test-data > div').remove();
 		return true;
+		//alert('submit:' + $( this ).serialize());
 	});
 });
