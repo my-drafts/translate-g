@@ -8,7 +8,7 @@
 
 <body>
 {% for task in tasks %}
-	<a href="/task/{{task.id}}">{{taskId}}</a>
+	<a href="/task/{{task._id}}">{{taskId}}</a>
   |
 	<span>
 		{% if task.out is null %}

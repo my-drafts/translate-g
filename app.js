@@ -46,8 +46,9 @@ tpl.compileFile('tasks-ids-list.html').then(function(tf){
 app.get('/tasks-ids-list', function(conn){
 	return db.find({}).then(function(cursor){
 		var tasks = cursor.map(function(record){
-			record.id = String(record._id);
-			return record;
+			let json = JSON.stringify(record);
+			let row = JSON.parse(json);
+			return row;
 		});
 		return tf2({tasks: tasks});
 	});
