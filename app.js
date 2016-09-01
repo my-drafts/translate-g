@@ -1,18 +1,14 @@
-var util = require('util');
-var of = require('zanner-typeof').of;
-var pt = require('zanner-ptg');
-var fix = pt.fix, translating = pt.translate;
-
+var encoding = require('encoding');
+var mach = require('mach'), app = mach.stack();
+var type = require('zanner-typeof'), of = type.of;
 var db = require('./lib/db');
 var tpl = require('./lib/tpl');
-var Tic = require('./lib/tic').Tic;
 
-var encoding = require('encoding');
-var mach = require('mach');
-var app = mach.stack();
+
 //app.use(mach.logger);
 app.use(mach.modified);
 app.use(mach.params);
+
 
 app.get('/storage/*', function(conn){
 	return mach.file({
@@ -22,7 +18,6 @@ app.get('/storage/*', function(conn){
 		useETag: true
 	})(conn);
 });
-
 /** /
  app.use(mach.file, {
 	root: __dirname + '/storage/',
@@ -31,6 +26,7 @@ app.get('/storage/*', function(conn){
 	useETag: true
 });
  /**/
+
 
 // uri: "/"
 var tf1;
@@ -183,6 +179,6 @@ app.post('/*', function(conn){
 	return 'use unknown POST uri';
 });
 
+
 mach.serve(app, {port: 8088});
 
-Tic();
