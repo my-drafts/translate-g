@@ -47,8 +47,9 @@ tpl.compileFile('tasks-ids-list.html').then(function(tf){
 	tf2 = tf;
 });
 app.get('/tasks-ids-list', function(conn){
-	return db.find({}).sort({created:-1}).then(function(cursor){
-		var tasks = cursor.map(function(record){
+	return db.find({}).then(function(cursor){
+		cursor.sort({created:-1});
+		let tasks = cursor.map(function(record){
 			let json = JSON.stringify(record);
 			let row = JSON.parse(json);
 			return row;
@@ -63,8 +64,9 @@ tpl.compileFile('tasks-list.html').then(function(tf){
 	tf3 = tf;
 });
 app.get('/tasks-list', function(conn){
-	return db.find({}).sort({created:-1}).then(function(cursor){
-		var tasks = cursor.map(function(record){
+	return db.find({}).then(function(cursor){
+		cursor.sort({created:-1});
+		let tasks = cursor.map(function(record){
 			return JSON.stringify(record, null, '  ');
 		});
 		return tf3({tasks: tasks});
@@ -78,7 +80,7 @@ tpl.compileFile('task-to-translate.html').then(function(tf){
 	tf4 = tf;
 });
 app.get('/task-to-translate/:id', function(conn){
-	var render = function(translate){
+	let render = function(translate){
 		return tf4({lang: translate.sl || 'en', items: translate.data || false});
 		//return tpl.renderFile('translate.html', {lang: translate.sl, items: translate.data});
 	};
@@ -95,7 +97,7 @@ tpl.compileFile('task.html').then(function(tf){
 	tf5 = tf;
 });
 app.get('/task/:id', function(conn){
-	var render = function(translate){
+	let render = function(translate){
 		return tf5({task: translate ? JSON.stringify(translate, null, '  ') : '.'});
 	};
 	return db.findById(conn.params.id || 0)
@@ -117,10 +119,10 @@ app.get('/task-send-form', function(conn){
 
 app.post('/task-to-query', function(conn){
 	return new Promise(function(resolve, reject){
-		var rest = conn.params;
+		let rest = conn.params;
 
 		// conn.params.data
-		var data = rest.data;
+		let data = rest.data;
 		rest.data = undefined;
 		delete rest.data;
 		try{
@@ -132,31 +134,39 @@ app.post('/task-to-query', function(conn){
 		}
 
 		// conn.params.proxy
-		var proxy = rest.proxy;
+		let proxy = rest.proxy;
 		rest.proxy = undefined;
 		delete rest.proxy;
-		if(!of(proxy, 'string')) proxy = undefined;
+		if(!of(proxy, 'string')){
+			proxy = undefined;
+		}
 
 		// conn.params.sl
-		var sl = rest.sl;
+		let sl = rest.sl;
 		rest.sl = undefined;
 		delete rest.sl;
-		if(!of(sl, 'string')) sl = undefined;
+		if(!of(sl, 'string')){
+			sl = undefined;
+		}
 
 		// conn.params.tl
-		var tl = rest.tl;
+		let tl = rest.tl;
 		rest.tl = undefined;
 		delete rest.tl;
-		if(!of(tl, 'string')) tl = undefined;
+		if(!of(tl, 'string')){
+			tl = undefined;
+		}
 
 		// conn.params.uri
-		var uri = rest.uri;
+		let uri = rest.uri;
 		rest.uri = undefined;
 		delete rest.uri;
-		if(!of(uri, 'string')) uri = undefined;
+		if(!of(uri, 'string')){
+			uri = undefined;
+		}
 
 		if(data && sl && tl && uri){
-			var t = {data: data, sl: sl, tl: tl, uri: uri};
+			let t = {data: data, sl: sl, tl: tl, uri: uri};
 			if(proxy) t.proxy = proxy;
 			db.save(t).then(function(record){
 				resolve(String(record._id));
