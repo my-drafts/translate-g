@@ -1,7 +1,6 @@
 'use strict';
 
 
-var encoding = require('encoding');
 var mach = require('mach'), app = mach.stack();
 var type = require('zanner-typeof'), of = type.of;
 var db = require('./lib/db');
@@ -47,8 +46,7 @@ tpl.compileFile('tasks-ids-list.html').then(function(tf){
 	tf2 = tf;
 });
 app.get('/tasks-ids-list', function(conn){
-	return db.find({}).then(function(cursor){
-		cursor.sort({created:-1});
+	return db.find({}, null, {sort: {created: -1}}).then(function(cursor){
 		let tasks = cursor.map(function(record){
 			let json = JSON.stringify(record);
 			let row = JSON.parse(json);
@@ -64,8 +62,7 @@ tpl.compileFile('tasks-list.html').then(function(tf){
 	tf3 = tf;
 });
 app.get('/tasks-list', function(conn){
-	return db.find({}).then(function(cursor){
-		cursor.sort({created:-1});
+	return db.find({}, null, {sort: {created: -1}}).then(function(cursor){
 		let tasks = cursor.map(function(record){
 			return JSON.stringify(record, null, '  ');
 		});
