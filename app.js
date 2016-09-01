@@ -1,3 +1,6 @@
+'use strict';
+
+
 var encoding = require('encoding');
 var mach = require('mach'), app = mach.stack();
 var type = require('zanner-typeof'), of = type.of;
