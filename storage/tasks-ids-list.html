@@ -7,8 +7,17 @@
 </head>
 
 <body>
-{% for taskId in tasks %}
-	<a href="/task/{{taskId}}">{{taskId}}</a><br />
+{% for task in tasks %}
+	<a href="/task/{{task.id}}">{{taskId}}</a>
+  |
+	<span>
+		{% if task.out is null %}
+		...
+		{% else %}
+		done
+		{% endif %}
+	</span>
+  <br />
 {% endfor %}
 </body>
 
