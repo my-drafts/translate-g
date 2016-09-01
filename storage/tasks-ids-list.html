@@ -8,11 +8,13 @@
 
 <body>
 {% for task in tasks %}
-	<a href="/task/{{task._id}}">{{taskId}}</a>
+	<a href="/task/{{task._id}}">{{task._id}}</a>
   |
 	<span>
-		{% if task.out is null %}
+		{% if task.out==null %}
 		...
+		{% elif task.out.error %}
+		error
 		{% else %}
 		done
 		{% endif %}
