@@ -47,7 +47,7 @@ tpl.compileFile('tasks-ids-list.html').then(function(tf){
 	tf2 = tf;
 });
 app.get('/tasks-ids-list', function(conn){
-	return db.find({}).then(function(cursor){
+	return db.find({}).sort({created:-1}).then(function(cursor){
 		var tasks = cursor.map(function(record){
 			let json = JSON.stringify(record);
 			let row = JSON.parse(json);
@@ -63,7 +63,7 @@ tpl.compileFile('tasks-list.html').then(function(tf){
 	tf3 = tf;
 });
 app.get('/tasks-list', function(conn){
-	return db.find({}).then(function(cursor){
+	return db.find({}).sort({created:-1}).then(function(cursor){
 		var tasks = cursor.map(function(record){
 			return JSON.stringify(record, null, '  ');
 		});
