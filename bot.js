@@ -1,4 +1,4 @@
-'use static';
+'use strict';
 
 
 var tic = require('./lib/tic');
