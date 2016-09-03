@@ -40,7 +40,8 @@ form#translate-test input[type=text] {
   margin: 4px 0 0;
   width: 64px;
 }
-form#translate-test input[type=text][name=uri] {
+form#translate-test input[type=text][name=uri],
+form#translate-test input[type=text][name=proxy] {
   width: 256px;
 }
 form#translate-test input[type=submit],
