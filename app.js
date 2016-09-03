@@ -111,7 +111,7 @@ tpl.compileFile('task-send-form.html').then(function(tf){
 	tf6 = tf;
 });
 app.get('/task-send-form', function(conn){
-	return tf6({uri: 'http://zanner.org.ua/t/'});
+	return tf6({});
 });
 
 app.post('/task-to-query', function(conn){
@@ -134,7 +134,7 @@ app.post('/task-to-query', function(conn){
 		let proxy = rest.proxy;
 		rest.proxy = undefined;
 		delete rest.proxy;
-		if(!of(proxy, 'string')){
+		if(!of(proxy, 'string') || !proxy.trim()){
 			proxy = undefined;
 		}
 
@@ -142,7 +142,7 @@ app.post('/task-to-query', function(conn){
 		let sl = rest.sl;
 		rest.sl = undefined;
 		delete rest.sl;
-		if(!of(sl, 'string')){
+		if(!of(sl, 'string') || !sl.trim()){
 			sl = undefined;
 		}
 
@@ -150,7 +150,7 @@ app.post('/task-to-query', function(conn){
 		let tl = rest.tl;
 		rest.tl = undefined;
 		delete rest.tl;
-		if(!of(tl, 'string')){
+		if(!of(tl, 'string') || !tl.trim()){
 			tl = undefined;
 		}
 
@@ -158,7 +158,7 @@ app.post('/task-to-query', function(conn){
 		let uri = rest.uri;
 		rest.uri = undefined;
 		delete rest.uri;
-		if(!of(uri, 'string')){
+		if(!of(uri, 'string') || !uri.trim()){
 			uri = undefined;
 		}
 

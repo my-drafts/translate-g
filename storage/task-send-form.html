@@ -31,7 +31,11 @@
 				<option value="uk">uk</option>
 			</select>
 			<br />
-			<input type="text" name="uri" placeholder="< TRANSLATE-SEND-URI >" value="{{uri}}" />
+			<input type="text" name="uri" placeholder="http://translated-text-send-url"
+			       value="{{uri | default('http://zanner.org.ua/t/')}}" />
+			<br />
+			<input type="text" name="proxy" placeholder="proxy-host:proxy-port"
+			       value="{{proxy | default('200.9.220.120:3128')}}" />
 			<hr />
 			<input type="submit" value="send" />
 			<input type="reset" value="reset" />
