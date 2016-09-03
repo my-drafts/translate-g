@@ -1,10 +1,11 @@
 {
   "name": "translate-g",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "main": "app.js",
   "scripts": {
     "bfork": "node ../translate-g/bot.js &",
     "bot": "node ../translate-g/bot.js",
+    "tic": "node ../translate-g/bot-tic.js",
     "bstate": "ps -ax | grep -e 'node' | grep -e 'translate-g' | grep -e 'bot.js' | awk '{print $1}'",
     "fork": "node ../translate-g/app.js &",
     "start": "node ../translate-g/app.js",
