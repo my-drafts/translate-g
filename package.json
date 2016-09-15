@@ -1,6 +1,6 @@
 {
   "name": "translate-g",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "main": "app.js",
   "scripts": {
     "bfork": "node ../translate-g/bot.js &",
@@ -25,7 +25,7 @@
     "strftime": "^0.9.2",
     "swig": "^1.4.2",
     "url": "^0.11.0",
-    "zanner-ptg": "^1.0.7",
+    "zanner-ptg": "^1.0.8",
     "zanner-typeof": "^1.0.7"
   },
   "repository": {
