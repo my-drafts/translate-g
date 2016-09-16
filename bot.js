@@ -4,12 +4,12 @@
 var tic = require('./lib/tic');
 
 
-var tics = function(){
+var tak = function(){
 	const time = 1000*120;
-	let sto = function(){
-		setTimeout(tics, time);
-	};
-	tic().then(sto, sto);
+	setTimeout(function(){
+		tic().then(tak, tak);
+	}, time);
 };
 
-tics();
+
+tak();

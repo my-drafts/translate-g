@@ -23,13 +23,13 @@ pr(1)
 		return pr(0);
 	}).catch(function(r){
 		l('e1');
-		return pr(0);
+		return pr(0); // 1 | 0
 	}).then(function(r){
 		l('r4');
 		return pr(1);
 	}).catch(function(r){
 		l('e2');
-		return pr(1);
+		return pr(0);
 	}).then(function(r){
 		l('r5');
 		return pr(1);
