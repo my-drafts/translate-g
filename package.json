@@ -1,6 +1,6 @@
 {
   "name": "translate-g",
-  "version": "1.0.31",
+  "version": "1.0.34",
   "main": "app.js",
   "scripts": {
     "bfork": "node ../translate-g/bot.js &",

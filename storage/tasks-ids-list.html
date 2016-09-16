@@ -11,13 +11,13 @@
 	<a href="/task/{{task._id}}">{{task._id}}</a>
   |
 	<span>
-		{% if task.out && task.out.error %}
+		{% if task.error && task.error.out %}
 		out error
-		{% elif task.outResponse && task.outResponse.error %}
+		{% elif task.error && task.error.outResponse %}
 		outResponse error
-		{% elif task.outResponse && task.outResponse.code==200 %}
+		{% elif task.out!=null && task.outResponse!=null %}
 		ok
-		{% elif task.out==null || task.outResponse=={} %}
+		{% elif task.out==null || task.outResponse==null %}
 		...
 		{% else %}
 		done
